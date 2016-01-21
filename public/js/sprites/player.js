@@ -15,6 +15,7 @@
     RIGHT : 1
   };
 
+  var WALK_SPEED = 4; // pixels per frame
   var JUMP_HEIGHT = 23;
   var DIVE_SPEED = 20;
   var DIVE_DISTANCE = 20; // horizontal "steps" per frame
@@ -98,14 +99,20 @@
     this.velocity = { x : 0, y : 0 };
 
   };
-  ToeFu.Player.prototype.left = function(){
+  ToeFu.Player.prototype.step_left = function(){
 
     this.velocity.x = -WALK_SPEED;
 
   };
-  ToeFu.Player.prototype.right = function(){
+  ToeFu.Player.prototype.step_right = function(){
 
+    console.log("woaou");
     this.velocity.x = WALK_SPEED;
+
+  };
+  ToeFu.Player.prototype.stop = function(){
+
+    this.velocity.x = 0;
 
   };
 

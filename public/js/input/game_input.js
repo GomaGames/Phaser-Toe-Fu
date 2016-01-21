@@ -31,28 +31,22 @@
     this.player_1_keys.JUMP.onDown.add( this.state.player_1.jump.bind(this.state.player_1) );
     this.player_1_keys.DIVE.onDown.add( this.state.player_1.dive.bind(this.state.player_1) );
     this.player_1_keys.DIVE.onUp.add( this.state.player_1.dive_stop.bind(this.state.player_1) );
+    this.player_1_keys.LEFT.onDown.add( this.state.player_1.step_left.bind(this.state.player_1) );
+    this.player_1_keys.LEFT.onUp.add( this.state.player_1.stop.bind(this.state.player_1) );
+    this.player_1_keys.RIGHT.onDown.add( this.state.player_1.step_right.bind(this.state.player_1) );
+    this.player_1_keys.RIGHT.onUp.add( this.state.player_1.stop.bind(this.state.player_1) );
 
     this.player_2_keys.JUMP.onDown.add( this.state.player_2.jump.bind(this.state.player_2) );
     this.player_2_keys.DIVE.onDown.add( this.state.player_2.dive.bind(this.state.player_2) );
     this.player_2_keys.DIVE.onUp.add( this.state.player_2.dive_stop.bind(this.state.player_2) );
+    this.player_2_keys.LEFT.onDown.add( this.state.player_2.step_left.bind(this.state.player_2) );
+    this.player_2_keys.LEFT.onUp.add( this.state.player_2.stop.bind(this.state.player_2) );
+    this.player_2_keys.RIGHT.onDown.add( this.state.player_2.step_right.bind(this.state.player_2) );
+    this.player_2_keys.RIGHT.onUp.add( this.state.player_2.stop.bind(this.state.player_2) );
 
   };
 
   ToeFu.GameInput.prototype.update = function(){
-
-    if( this.player_1_keys.LEFT.isDown ){
-      this.state.player_1.left();
-    }
-    if( this.player_1_keys.RIGHT.isDown ){
-      this.state.player_1.right();
-    }
-
-    if( this.player_2_keys.LEFT.isDown ){
-      this.state.player_2.left();
-    }
-    if( this.player_2_keys.RIGHT.isDown ){
-      this.state.player_2.right();
-    }
 
   };
 
