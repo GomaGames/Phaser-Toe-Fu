@@ -73,7 +73,6 @@
   };
 
   ToeFu.Player.prototype.victory = function(){
-    console.log("victory");
     this.is_diving = false;
 
     // make animation
