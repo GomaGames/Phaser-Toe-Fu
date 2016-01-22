@@ -25,11 +25,15 @@
     this.game = game;
     this.name = name;
     this.facing; // game state updates this
-    this.is_diving = false;
-    this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
+    this.is_diving;
+    this.input_enabled; // ghetto, need a better mechanism for beginning of game, and on defeat
 
     // super constructor call
     Phaser.Sprite.call(this, game, 0, 0, ToeFu.ASSETS.SPRITESHEET.PLAYER.name);
+
+    this.is_diving = false;
+    this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
+
 
     // render settings
     this.scale.set(SCALE);
@@ -58,6 +62,7 @@
   });
 
   // Phaser callbacks
+
   ToeFu.Player.prototype.update = function(){
 
     // ignore acceleration(gravity) while diving
@@ -68,6 +73,10 @@
     // update facing
     this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
   };
+
+  // End Phaser callbacks
+
+  // Custom methods
 
   ToeFu.Player.prototype.victory = function(){
     this.is_diving = false;
@@ -87,7 +96,8 @@
 
   };
 
-  // input actions
+  // Input actions
+
   ToeFu.Player.prototype.jump = function(){
     if(!this.input_enabled) return;
 

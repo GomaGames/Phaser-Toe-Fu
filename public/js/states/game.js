@@ -21,18 +21,27 @@
 
   var DEFAULT_FLASH_TIME = 3000; // ms
 
+  var MATCH = {
+    PRE : "PRE",
+    IN_PROGRESS : "IN_PROGRESS",
+    RESOLVED : "RESOLVED"
+  };
+
   // class constructor
   ToeFu.Game = function () {
 
     this.player_1;
     this.player_2;
     this.input;
+    this.match_state;
 
   };
 
   ToeFu.Game.FLOOR_Y = 400;
 
   ToeFu.Game.prototype.create = function(){
+
+    this.match_state = MATCH.IN_PROGRESS;
 
     // enable ARCADE physics
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -106,36 +115,54 @@
       if(player_1.is_diving){
         this.resolve_match(player_1, player_2);
       } else { // player 2 is diving
-        this.resolve_match(player_2, player_2);
+        this.resolve_match(player_2, player_1);
       }
     }
 
   }
 
   function should_players_collide(player_1, player_2){
-    return [player_1, player_2].some(function(player){
-      return player.is_diving;
-    });
+    return this.match_state == MATCH.IN_PROGRESS &&
+      [player_1, player_2].some(function(player){
+        return player.is_diving;
+      });
   }
 
   ToeFu.Game.prototype.resolve_match = function(victor, loser){
     victor.victory();
     loser.defeat();
+    this.match_state = MATCH.RESOLVED;
 
-    this.flash(victor.name + ' wins!!!');
-  }
 
-  ToeFu.Game.prototype.flash = function(message){
+    this.flash(victor.name + ' wins!!!', this.enable_restart_game.bind(this));
+  };
 
-    var text = this.game.add.text(this.game.world.centerX - 250, 0, message, FLASH_MESSAGE_STYLE);
+  ToeFu.Game.prototype.flash = function(message, cb){
+
+    var text = this.game.add.text(0, 0, message, FLASH_MESSAGE_STYLE);
+    text.x = this.game.world.centerX - text.width/2;
+
     setTimeout(function(){
       text.destroy();
+      if(cb) cb();
     }, DEFAULT_FLASH_TIME);
-  }
+  };
+
+  ToeFu.Game.prototype.enable_restart_game = function(){
+    this.flash('press [enter] to play again');
+
+  };
 
   ToeFu.Game.prototype.shutdown = function(){
-    // clean up our input handler
-    this.input.shutdown();
+
+  };
+
+  // input handlers
+
+  ToeFu.Game.prototype.continue = function(){
+    if(this.match_state === MATCH.RESOLVED){
+      this.state.start(ToeFu.STATES.BOOT);
+    }
   };
 
 })();
