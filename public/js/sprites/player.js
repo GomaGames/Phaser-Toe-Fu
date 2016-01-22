@@ -27,7 +27,6 @@
     this.facing; // game state updates this
     this.is_diving = false;
     this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
-    this.acceleration = { x : 0, y : 0 };
 
     // super constructor call
     Phaser.Sprite.call(this, game, 0, 0, ToeFu.ASSETS.SPRITESHEET.PLAYER.name);
@@ -61,11 +60,9 @@
   // Phaser callbacks
   ToeFu.Player.prototype.update = function(){
 
-    // apply acceleration
-    if( !this.is_diving && this.body.y < ToeFu.Game.FLOOR_Y ){
-      // gravity
-      this.body.velocity.y += this.acceleration.y;
-
+    // ignore acceleration(gravity) while diving
+    if( this.is_diving ){
+      this.body.acceleration.y = 0;
     }
 
     // update facing
@@ -73,7 +70,6 @@
   };
 
   ToeFu.Player.prototype.victory = function(){
-    console.log("victory");
     this.is_diving = false;
 
     // make animation
