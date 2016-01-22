@@ -21,8 +21,9 @@
   var DIVE_DISTANCE = 400; // horizontal "steps" per frame
 
   // sprite class constructor
-  ToeFu.Player = function (game) {
+  ToeFu.Player = function (game, name) {
     this.game = game;
+    this.name = name;
     this.facing; // game state updates this
     this.is_diving = false;
     this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat

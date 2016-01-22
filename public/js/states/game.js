@@ -13,6 +13,13 @@
     }
   ];
 
+  var FLASH_MESSAGE_STYLE = {
+    font: "65px Arial",
+    fill: "#ff0044",
+    align: "center"
+  };
+
+  var DEFAULT_FLASH_TIME = 3000; // ms
 
   // class constructor
   ToeFu.Game = function () {
@@ -31,8 +38,8 @@
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // create and add players
-    this.player_1 = new ToeFu.Player(this.game);
-    this.player_2 = new ToeFu.Player(this.game);
+    this.player_1 = new ToeFu.Player(this.game, 'Player 1');
+    this.player_2 = new ToeFu.Player(this.game, 'Player 2');
     this.game.add.existing(this.player_1);
     this.game.add.existing(this.player_2);
     this.game.physics.enable(this.player_1, Phaser.Physics.ARCADE);
@@ -78,7 +85,7 @@
     this.input.update();
 
     // update physics
-    this.game.physics.arcade.collide(this.player_1, this.player_2, players_collide, should_players_collide);
+    this.game.physics.arcade.collide(this.player_1, this.player_2, players_collide, should_players_collide, this);
   };
 
   function players_collide(player_1, player_2){
@@ -86,21 +93,21 @@
     if(player_1.is_diving && player_2.is_diving){
       // higher player wins
       if( player_1.body.y < player_2.body.y ){
+        this.resolve_match(player_1, player_2);
         player_1.victory();
         player_2.defeat();
       }else{
+        this.resolve_match(player_2, player_1);
         player_1.defeat();
         player_2.victory();
       }
-    } else {
+    } else { // only one player is diving
       // the player diving wins
-      [player_1, player_2].forEach(function(player){
-        if(player.is_diving){
-          player.victory();
-        } else {
-          player.defeat();
-        }
-      });
+      if(player_1.is_diving){
+        this.resolve_match(player_1, player_2);
+      } else { // player 2 is diving
+        this.resolve_match(player_2, player_2);
+      }
     }
 
   }
@@ -109,6 +116,21 @@
     return [player_1, player_2].some(function(player){
       return player.is_diving;
     });
+  }
+
+  ToeFu.Game.prototype.resolve_match = function(victor, loser){
+    victor.victory();
+    loser.defeat();
+
+    this.flash(victor.name + ' wins!!!');
+  }
+
+  ToeFu.Game.prototype.flash = function(message){
+
+    var text = this.game.add.text(this.game.world.centerX - 250, 0, message, FLASH_MESSAGE_STYLE);
+    setTimeout(function(){
+      text.destroy();
+    }, DEFAULT_FLASH_TIME);
   }
 
   ToeFu.Game.prototype.shutdown = function(){
