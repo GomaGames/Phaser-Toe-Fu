@@ -1,6 +1,6 @@
 (function(){
 
-  var GRAVITY = 45;
+  var GRAVITY = 1945;
 
   var INITIAL_POSITIONS = [
     // player 1
@@ -65,9 +65,9 @@
       if(player.body.y > ToeFu.Game.FLOOR_Y){
         player.body.y = ToeFu.Game.FLOOR_Y;
         player.body.velocity.y = 0;
-        player.acceleration.y = 0;
+        player.body.acceleration.y = 0;
       }else{
-        player.acceleration.y = GRAVITY;
+        player.body.acceleration.y = GRAVITY;
       }
 
     });
