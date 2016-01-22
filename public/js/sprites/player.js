@@ -19,6 +19,7 @@
   var JUMP_HEIGHT = 1230;
   var DIVE_SPEED = 400;
   var DIVE_DISTANCE = 400; // horizontal "steps" per frame
+  var DIVE_JUMP_TIMEOUT = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
 
   // sprite class constructor
   ToeFu.Player = function (game, name) {
@@ -101,9 +102,11 @@
   ToeFu.Player.prototype.jump = function(){
     if(!this.input_enabled) return;
 
-    // only allow jumping from the floor (not in mid air)
-    if( this.body.velocity.y === 0 ){
+    // allow jumping from the floor (not in mid air)
+    if( this.body.y === ToeFu.Game.FLOOR_Y ){
       this.body.velocity.y = -JUMP_HEIGHT;
+    } else if( this.is_diving ){ // allow jump after dive (in mid air)
+      this.body.velocity.y = -JUMP_HEIGHT*(this.body.y/ToeFu.Game.FLOOR_Y);
     }
 
   };
@@ -126,7 +129,9 @@
     // reset velocity
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
-    this.is_diving = false;
+    setTimeout(function(){
+      this.is_diving = false;
+    }.bind(this), DIVE_JUMP_TIMEOUT);
 
   };
   ToeFu.Player.prototype.step_left = function(){
