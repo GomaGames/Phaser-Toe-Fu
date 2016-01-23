@@ -7,6 +7,21 @@
       name : 'idle',
       frames : [0,1,2,3],
       fps : 5
+    },
+    WALK : {
+      name : 'walk',
+      frames : [4,5],
+      fps : 10
+    },
+    JUMP : {
+      name : 'jump',
+      frames : [6],
+      fps : 1
+    },
+    DIVE : {
+      name : 'dive',
+      frames : [7],
+      fps : 1
     }
   };
 
@@ -24,7 +39,7 @@
   function select_sprite_row(player_id){
     return function(frame_id){
       return frame_id + player_id*ToeFu.ASSETS.SPRITESHEET.PLAYER.frames_per_row;
-    }
+    };
   }
 
   // sprite class constructor
@@ -53,6 +68,9 @@
 
     // animations
     this.animations.add(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.frames.map(select_sprite_row(this.id)));
+    this.animations.add(ANIMATIONS.WALK.name, ANIMATIONS.WALK.frames.map(select_sprite_row(this.id)));
+    this.animations.add(ANIMATIONS.JUMP.name, ANIMATIONS.JUMP.frames.map(select_sprite_row(this.id)));
+    this.animations.add(ANIMATIONS.DIVE.name, ANIMATIONS.DIVE.frames.map(select_sprite_row(this.id)));
 
     // initial animation state
     this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
@@ -81,6 +99,19 @@
 
     // update facing
     this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
+
+    // update animations
+    if(this.is_diving){
+      this.animations.play(ANIMATIONS.DIVE.name);
+    }else{
+      if(this.body.y < ToeFu.Game.FLOOR_Y){ // in the air
+        this.animations.play(ANIMATIONS.JUMP.name);
+      } else if(this.body.velocity.x !== 0){ // running
+        this.animations.play(ANIMATIONS.WALK.name, ANIMATIONS.WALK.fps, true);
+      } else {
+        this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
+      }
+    }
   };
 
   // End Phaser callbacks
@@ -146,18 +177,15 @@
     if(!this.input_enabled) return;
 
     this.body.velocity.x = -WALK_SPEED;
-
   };
   ToeFu.Player.prototype.step_right = function(){
     if(!this.input_enabled) return;
 
     this.body.velocity.x = WALK_SPEED;
-
   };
   ToeFu.Player.prototype.stop = function(){
 
     this.body.velocity.x = 0;
-
   };
 
 })();
