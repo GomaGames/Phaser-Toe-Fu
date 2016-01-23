@@ -1,6 +1,6 @@
 (function(){
 
-  var SCALE = 2;
+  var SCALE = 1;
 
   var ANIMATIONS = {
     IDLE : {
@@ -21,10 +21,18 @@
   var DIVE_DISTANCE = 400; // horizontal "steps" per frame
   var DIVE_JUMP_TIMEOUT = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
 
+  function select_sprite_row(player_id){
+    return function(frame_id){
+      return frame_id + player_id*ToeFu.ASSETS.SPRITESHEET.PLAYER.frames_per_row;
+    }
+  }
+
   // sprite class constructor
-  ToeFu.Player = function (game, name) {
+  // @id is 0 index based
+  ToeFu.Player = function (game, id, name) {
     this.game = game;
-    this.name = name;
+    this.id = id;
+    this.name = name? name : 'Player '+(id+1);
     this.facing; // game state updates this
     this.is_diving;
     this.input_enabled; // ghetto, need a better mechanism for beginning of game, and on defeat
@@ -44,7 +52,7 @@
     this.anchor = { x : 0.5, y : 0.5 };
 
     // animations
-    this.animations.add(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.frames);
+    this.animations.add(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.frames.map(select_sprite_row(this.id)));
 
     // initial animation state
     this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);

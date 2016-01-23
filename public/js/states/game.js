@@ -42,13 +42,14 @@
   ToeFu.Game.prototype.create = function(){
 
     this.match_state = MATCH.IN_PROGRESS;
+    this.game.stage.backgroundColor = '#ffffff';
 
     // enable ARCADE physics
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // create and add players
-    this.player_1 = new ToeFu.Player(this.game, 'Player 1');
-    this.player_2 = new ToeFu.Player(this.game, 'Player 2');
+    this.player_1 = new ToeFu.Player(this.game, 0);
+    this.player_2 = new ToeFu.Player(this.game, 1);
     this.game.add.existing(this.player_1);
     this.game.add.existing(this.player_2);
     this.game.physics.enable(this.player_1, Phaser.Physics.ARCADE);
