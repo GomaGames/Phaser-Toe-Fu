@@ -49,15 +49,17 @@
     this.id = id;
     this.name = name? name : 'Player '+(id+1);
     this.facing; // game state updates this
-    this.is_diving;
-    this.input_enabled; // ghetto, need a better mechanism for beginning of game, and on defeat
+    this.is_diving = false;
+    this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
 
     // super constructor call
     Phaser.Sprite.call(this, game, 0, 0, ToeFu.ASSETS.SPRITESHEET.PLAYER.name);
 
-    this.is_diving = false;
-    this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
+    // enable physics (adds this.body)
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
+    // use stage bounding box
+    this.body.collideWorldBounds = true;
 
     // render settings
     this.scale.set(SCALE);
