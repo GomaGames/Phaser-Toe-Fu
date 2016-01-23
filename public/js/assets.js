@@ -14,9 +14,9 @@ ToeFu.ASSETS = {
   SPRITESHEET : {
     PLAYER : {
       name : 'player',
-      path : 'assets/graphics/players_93x89.png',
-      width : 93,
-      height : 89,
+      path : 'assets/graphics/players_100x96.png',
+      width : 100,
+      height : 96,
       frames : 18,
       frames_per_row : 9 // split spritesheet by player/row
     }
@@ -24,9 +24,9 @@ ToeFu.ASSETS = {
   IMAGE : {
     BG : {
       name : 'bg',
-      path : 'assets/graphics/bg_1004x694.png',
-      width : 1004,
-      height : 694
+      path : 'assets/graphics/bg_900x600.jpg',
+      width : 900,
+      height : 600
     }
   }
 };
