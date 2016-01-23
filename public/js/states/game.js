@@ -52,8 +52,6 @@
     this.player_2 = new ToeFu.Player(this.game, 1);
     this.game.add.existing(this.player_1);
     this.game.add.existing(this.player_2);
-    this.game.physics.enable(this.player_1, Phaser.Physics.ARCADE);
-    this.game.physics.enable(this.player_2, Phaser.Physics.ARCADE);
 
     // position players
     this.player_1.x = INITIAL_POSITIONS[0].x;
