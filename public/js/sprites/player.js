@@ -105,7 +105,9 @@
     }
 
     // update facing
-    this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
+    if( this.alive ){
+      this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
+    }
 
     // update animations
     if(!this.alive){
