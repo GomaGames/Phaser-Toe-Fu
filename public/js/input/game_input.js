@@ -18,7 +18,10 @@
       }
     ],
     STATE : {
-      CONTINUE : Phaser.KeyCode.ENTER
+      CONTINUE : Phaser.KeyCode.ENTER,
+      B : Phaser.KeyCode.B,
+      M : Phaser.KeyCode.M,
+      O : Phaser.KeyCode.O
     }
   };
 
@@ -48,6 +51,9 @@
     this.player_2_keys.RIGHT.onUp.add( this.state.player_2.stop.bind(this.state.player_2) );
 
     this.state_keys.CONTINUE.onUp.add( this.state.continue.bind(this.state) );
+    this.state_keys.B.onUp.add( this.state.bmo_1.bind(this.state) );
+    this.state_keys.M.onUp.add( this.state.bmo_2.bind(this.state) );
+    this.state_keys.O.onUp.add( this.state.bmo_3.bind(this.state) );
   };
 
   ToeFu.GameInput.prototype.update = function(){

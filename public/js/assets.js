@@ -17,7 +17,7 @@ ToeFu.ASSETS = {
       path : 'assets/graphics/players_100x96.png',
       width : 100,
       height : 96,
-      frames : 18,
+      frames : 27,
       frames_per_row : 9 // split spritesheet by player/row
     }
   },
