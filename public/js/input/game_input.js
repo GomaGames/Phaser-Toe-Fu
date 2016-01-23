@@ -16,7 +16,10 @@
         LEFT : Phaser.KeyCode.LEFT,
         RIGHT : Phaser.KeyCode.RIGHT
       }
-    ]
+    ],
+    STATE : {
+      CONTINUE : Phaser.KeyCode.ENTER
+    }
   };
 
   ToeFu.GameInput = function( state ){
@@ -25,7 +28,7 @@
 
     this.player_1_keys = this.state.game.input.keyboard.addKeys(BIND.PLAYER[0]);
     this.player_2_keys = this.state.game.input.keyboard.addKeys(BIND.PLAYER[1]);
-
+    this.state_keys = this.state.game.input.keyboard.addKeys(BIND.STATE);
 
     // key up and down listeners
     this.player_1_keys.JUMP.onDown.add( this.state.player_1.jump.bind(this.state.player_1) );
@@ -44,14 +47,11 @@
     this.player_2_keys.RIGHT.onDown.add( this.state.player_2.step_right.bind(this.state.player_2) );
     this.player_2_keys.RIGHT.onUp.add( this.state.player_2.stop.bind(this.state.player_2) );
 
+    this.state_keys.CONTINUE.onUp.add( this.state.continue.bind(this.state) );
   };
 
   ToeFu.GameInput.prototype.update = function(){
 
-  };
-
-  ToeFu.GameInput.prototype.shutdown = function(){
-    this.state.game.keyboard.destroy();
   };
 
 })();

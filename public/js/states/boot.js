@@ -14,10 +14,11 @@ ToeFu.ASSETS = {
   SPRITESHEET : {
     PLAYER : {
       name : 'player',
-      path : 'assets/graphics/snowball_sprite.png',
-      width : 75,
-      height : 68,
-      frames : 11
+      path : 'assets/graphics/players_93x89.png',
+      width : 93,
+      height : 89,
+      frames : 18,
+      frames_per_row : 9 // split spritesheet by player/row
     }
   }
 };
