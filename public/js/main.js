@@ -3,7 +3,7 @@ window.ToeFu = {
   ASSETS : {},
 
   STAGE : {
-    WIDTH : 800,
+    WIDTH : 900,
     HEIGHT : 600
   },
 

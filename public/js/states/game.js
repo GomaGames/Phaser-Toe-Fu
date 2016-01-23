@@ -42,7 +42,7 @@
   ToeFu.Game.prototype.create = function(){
 
     this.match_state = MATCH.IN_PROGRESS;
-    this.game.stage.backgroundColor = '#ffffff';
+    this.game.add.tileSprite(0,0,ToeFu.ASSETS.IMAGE.BG.width,ToeFu.ASSETS.IMAGE.BG.height, ToeFu.ASSETS.IMAGE.BG.name);
 
     // enable ARCADE physics
     this.game.physics.startSystem(Phaser.Physics.ARCADE);

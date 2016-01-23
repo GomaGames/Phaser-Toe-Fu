@@ -20,6 +20,14 @@ ToeFu.ASSETS = {
       frames : 18,
       frames_per_row : 9 // split spritesheet by player/row
     }
+  },
+  IMAGE : {
+    BG : {
+      name : 'bg',
+      path : 'assets/graphics/bg_1004x694.png',
+      width : 1004,
+      height : 694
+    }
   }
 };
 
