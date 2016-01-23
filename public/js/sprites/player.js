@@ -22,6 +22,11 @@
       name : 'dive',
       frames : [7],
       fps : 1
+    },
+    DEAD : {
+      name : 'dead',
+      frames : [8],
+      fps : 1
     }
   };
 
@@ -50,7 +55,6 @@
     this.name = name? name : 'Player '+(id+1);
     this.facing; // game state updates this
     this.is_diving = false;
-    this.input_enabled = true; // ghetto, need a better mechanism for beginning of game, and on defeat
 
     // super constructor call
     Phaser.Sprite.call(this, game, 0, 0, ToeFu.ASSETS.SPRITESHEET.PLAYER.name);
@@ -73,6 +77,7 @@
     this.animations.add(ANIMATIONS.WALK.name, ANIMATIONS.WALK.frames.map(select_sprite_row(this.id)));
     this.animations.add(ANIMATIONS.JUMP.name, ANIMATIONS.JUMP.frames.map(select_sprite_row(this.id)));
     this.animations.add(ANIMATIONS.DIVE.name, ANIMATIONS.DIVE.frames.map(select_sprite_row(this.id)));
+    this.animations.add(ANIMATIONS.DEAD.name, ANIMATIONS.DEAD.frames.map(select_sprite_row(this.id)));
 
     // initial animation state
     this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
@@ -100,10 +105,14 @@
     }
 
     // update facing
-    this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
+    if( this.alive ){
+      this.scale.x = FACING_FACTOR[ this.facing ] * SCALE;
+    }
 
     // update animations
-    if(this.is_diving){
+    if(!this.alive){
+      this.animations.play(ANIMATIONS.DEAD.name);
+    }else if(this.is_diving){
       this.animations.play(ANIMATIONS.DIVE.name);
     }else{
       if(this.body.y < ToeFu.Game.FLOOR_Y){ // in the air
@@ -130,18 +139,17 @@
   ToeFu.Player.prototype.defeat = function(){
 
     // stop all input
-    this.input_enabled = false;
-    this.body.velocity.x = 0;
-
+    this.alive = false;
 
     // make animation
+    this.animations.play(ANIMATIONS.DEAD.name);
 
   };
 
   // Input actions
 
   ToeFu.Player.prototype.jump = function(){
-    if(!this.input_enabled) return;
+    if(!this.alive) return;
 
     // allow jumping from the floor (not in mid air)
     if( this.body.y === ToeFu.Game.FLOOR_Y ){
@@ -152,7 +160,7 @@
 
   };
   ToeFu.Player.prototype.dive = function(){
-    if(!this.input_enabled) return;
+    if(!this.alive) return;
 
     if( this.body.y < ToeFu.Game.FLOOR_Y ){
       this.body.velocity.y = DIVE_SPEED;
@@ -176,12 +184,12 @@
 
   };
   ToeFu.Player.prototype.step_left = function(){
-    if(!this.input_enabled) return;
+    if(!this.alive) return;
 
     this.body.velocity.x = -WALK_SPEED;
   };
   ToeFu.Player.prototype.step_right = function(){
-    if(!this.input_enabled) return;
+    if(!this.alive) return;
 
     this.body.velocity.x = WALK_SPEED;
   };
