@@ -34,13 +34,14 @@
     this.player_2;
     this.input;
     this.match_state;
-
+    this.bmo_code;
   };
 
   ToeFu.Game.FLOOR_Y = 400;
 
   ToeFu.Game.prototype.create = function(){
 
+    this.bmo_code = [];
     this.match_state = MATCH.IN_PROGRESS;
     this.game.add.tileSprite(0,0,ToeFu.ASSETS.IMAGE.BG.width,ToeFu.ASSETS.IMAGE.BG.height, ToeFu.ASSETS.IMAGE.BG.name);
 
@@ -161,6 +162,25 @@
   ToeFu.Game.prototype.continue = function(){
     if(this.match_state === MATCH.RESOLVED){
       this.state.start(ToeFu.STATES.BOOT);
+    }
+  };
+
+  ToeFu.Game.prototype.bmo_1 = function(){
+    this.bmo_code.push('b');
+  };
+
+  ToeFu.Game.prototype.bmo_2 = function(){
+    this.bmo_code.push('m');
+  };
+
+  ToeFu.Game.prototype.bmo_3 = function(){
+    this.bmo_code.push('o');
+    if(this.bmo_code.join('') === 'bmo'){
+      this.player_1.id = 2;
+      this.player_1.set_animations();
+      this.flash("BMO Code Enabled");
+    }else{
+      this.bmo_code = [];
     }
   };
 
