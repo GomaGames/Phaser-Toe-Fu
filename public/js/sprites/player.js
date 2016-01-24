@@ -103,7 +103,7 @@
 
   ToeFu.Player.prototype.update = function(){
 
-    // ignore acceleration(gravity) while diving
+    // low acceleration(gravity) while diving
     if( this.is_diving ){
       this.body.acceleration.y = 1000;
     }
