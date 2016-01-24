@@ -36,10 +36,10 @@
   };
 
   var WALK_SPEED = 400; // pixels per frame
-  var JUMP_HEIGHT = 1230;
-  var DIVE_SPEED = 400;
-  var DIVE_DISTANCE = 400; // horizontal "steps" per frame
-  var DIVE_JUMP_TIMEOUT = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
+  var JUMP_HEIGHT = 1200;
+  var DIVE_SPEED = 600;
+  var DIVE_DISTANCE = 600; // horizontal "steps" per frame
+  var DIVE_JUMP_TIMEOUT = 300; // ms after a dive that counts as a dive is still happening (and can jump again)
 
   function select_sprite_row(player_id){
     return function(frame_id){
@@ -105,7 +105,7 @@
 
     // ignore acceleration(gravity) while diving
     if( this.is_diving ){
-      this.body.acceleration.y = 0;
+      this.body.acceleration.y = 1000;
     }
 
     // update facing
@@ -170,6 +170,9 @@
       this.body.velocity.y = DIVE_SPEED;
       this.body.velocity.x = DIVE_DISTANCE * FACING_FACTOR[ this.facing ];
       this.is_diving = true;
+      setTimeout(function(){
+        this.is_diving = false;
+      }.bind(this), DIVE_JUMP_TIMEOUT);
     }else{
       this.body.velocity.y = 0;
       this.body.velocity.x = 0;
