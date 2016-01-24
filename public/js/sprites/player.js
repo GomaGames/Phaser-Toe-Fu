@@ -39,8 +39,8 @@
   var JUMP_HEIGHT = 1200;
   var DIVE_SPEED = 900;
   var DIVE_DISTANCE = 900; // horizontal "steps" per frame
-  var DIVE_JUMP_TIMEOUT = 200; // ms that a dive will be active
-  var DIVE_JUMP_RECHARGE = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
+  var DIVE_JUMP_TIMER_LIMIT = 200; // ms that a dive will be active
+  var DIVE_JUMP_TIMEOUT = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
 
   function select_sprite_row(player_id){
     return function(frame_id){
@@ -173,7 +173,7 @@
       this.is_diving = true;
       setTimeout(function(){
         this.is_diving = false;
-      }.bind(this), DIVE_JUMP_TIMEOUT);
+      }.bind(this), DIVE_JUMP_TIMER_LIMIT);
     }else{
       this.body.velocity.y = 0;
       this.body.velocity.x = 0;
@@ -188,7 +188,7 @@
     this.body.velocity.y = 0;
     setTimeout(function(){
       this.is_diving = false;
-    }.bind(this), DIVE_JUMP_RECHARGE);
+    }.bind(this), DIVE_JUMP_TIMEOUT);
 
   };
   ToeFu.Player.prototype.step_left = function(){
