@@ -36,9 +36,10 @@
   };
 
   var WALK_SPEED = 400; // pixels per frame
-  var JUMP_HEIGHT = 1230;
-  var DIVE_SPEED = 400;
-  var DIVE_DISTANCE = 400; // horizontal "steps" per frame
+  var JUMP_HEIGHT = 1200;
+  var DIVE_SPEED = 900;
+  var DIVE_DISTANCE = 900; // horizontal "steps" per frame
+  var DIVE_JUMP_TIMER_LIMIT = 200; // ms that a dive will be active
   var DIVE_JUMP_TIMEOUT = 125; // ms after a dive that counts as a dive is still happening (and can jump again)
 
   function select_sprite_row(player_id){
@@ -77,6 +78,11 @@
 
     // initial animation state
     this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
+
+    // add shadow
+    this.shadow = this.game.add.sprite(0,0,ToeFu.ASSETS.IMAGE.PLAYER_SHADOW.name);
+    this.shadow.anchor = { x : 0.5, y : 0.8 };
+    this.shadow.y = ToeFu.Game.FLOOR_Y + this.height;
   };
 
   ToeFu.Player.FACING = {
@@ -103,9 +109,9 @@
 
   ToeFu.Player.prototype.update = function(){
 
-    // ignore acceleration(gravity) while diving
+    // low acceleration(gravity) while diving
     if( this.is_diving ){
-      this.body.acceleration.y = 0;
+      this.body.acceleration.y = 1000;
     }
 
     // update facing
@@ -127,6 +133,11 @@
         this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
       }
     }
+
+    // update shadow position
+    this.shadow.x = this.x;
+    this.shadow.scale.x = 2 - (ToeFu.Game.FLOOR_Y / this.y / 3);
+    this.shadow.alpha = 1 - (ToeFu.Game.FLOOR_Y / this.y / 6);
   };
 
   // End Phaser callbacks
@@ -170,6 +181,9 @@
       this.body.velocity.y = DIVE_SPEED;
       this.body.velocity.x = DIVE_DISTANCE * FACING_FACTOR[ this.facing ];
       this.is_diving = true;
+      setTimeout(function(){
+        this.is_diving = false;
+      }.bind(this), DIVE_JUMP_TIMER_LIMIT);
     }else{
       this.body.velocity.y = 0;
       this.body.velocity.x = 0;

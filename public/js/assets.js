@@ -27,6 +27,12 @@ ToeFu.ASSETS = {
       path : 'assets/graphics/bg_900x600.jpg',
       width : 900,
       height : 600
+    },
+    PLAYER_SHADOW : {
+      name : 'player_shadow',
+      path : 'assets/graphics/shadow_50x10.png',
+      width : 50,
+      height : 10
     }
   }
 };
