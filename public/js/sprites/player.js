@@ -78,6 +78,11 @@
 
     // initial animation state
     this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
+
+    // add shadow
+    this.shadow = this.game.add.sprite(0,0,ToeFu.ASSETS.IMAGE.PLAYER_SHADOW.name);
+    this.shadow.anchor = { x : 0.5, y : 0.8 };
+    this.shadow.y = ToeFu.Game.FLOOR_Y + this.height;
   };
 
   ToeFu.Player.FACING = {
@@ -128,6 +133,11 @@
         this.animations.play(ANIMATIONS.IDLE.name, ANIMATIONS.IDLE.fps, true);
       }
     }
+
+    // update shadow position
+    this.shadow.x = this.x;
+    this.shadow.scale.x = 2 - (ToeFu.Game.FLOOR_Y / this.y / 3);
+    this.shadow.alpha = 1 - (ToeFu.Game.FLOOR_Y / this.y / 6);
   };
 
   // End Phaser callbacks
